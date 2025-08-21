@@ -16,7 +16,7 @@
       --muted:#9ab3c7;
     }
     *{box-sizing:border-box}
-    html,body{height:100%;margin:0;background:radial-gradient(1200px 800px at 70% 10%, #16224f 0%, var(--bg) 60%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+    html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;overflow:hidden;}
     h1,h2,h3{margin:.2rem 0}
     #game{display:grid;grid-template-rows:auto 1fr auto;gap:.5rem;height:100%;padding:10px}
     header{display:flex;gap:10px;align-items:center;justify-content:space-between;background:linear-gradient(180deg,#15235a,#0d1330);border:1px solid #22306b;border-radius:14px;padding:8px 12px;box-shadow:0 6px 18px rgba(0,0,0,.35), inset 0 0 30px rgba(0,229,255,.08)}
@@ -27,26 +27,38 @@
     .chip.score .dot{background:var(--accent2)}
     .chip.stealth .dot{background:#8a7cff}
     .chip.alerts .dot{background:var(--danger)}
-    .btn{background:linear-gradient(180deg,#0fe,#0acfdc);color:#00131a;border:none;border-radius:999px;padding:8px 14px;font-weight:900;letter-spacing:.3px;cursor:pointer;box-shadow:0 8px 24px rgba(0,229,255,.25)}
-    .btn:disabled{opacity:.6;cursor:not-allowed}
+    .btn{background:linear-gradient(180deg,#0fe,#0acfdc);color:#00131a;border:none;border-radius:999px;padding:8px 14px;font-weight:900;letter-spacing:.3px;cursor:pointer;box-shadow:0 8px 24px rgba(0,229,255,.25);transition:transform .15s ease}
+    .btn:hover{transform:scale(1.05)}
+    .btn:active{transform:scale(0.98)}
+    .btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
 
-    #viewport{position:relative;overflow:hidden;border-radius:16px;background:repeating-linear-gradient(45deg,#0f1a3d 0 20px,#0c1530 20px 40px);border:1px solid #1a275f;box-shadow:inset 0 0 50px rgba(0,229,255,.08)}
+    #viewport{position:relative;overflow:hidden;border-radius:16px;background:radial-gradient(1200px 800px at 70% 10%, #16224f 0%, var(--bg) 60%);border:2px solid #1a275f;box-shadow:inset 0 0 50px rgba(0,229,255,.08);transition: box-shadow .2s ease, border-color .2s ease}
     #arena{position:absolute;inset:0;}
 
-    .tile{position:absolute;border-radius:8px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:800;padding:4px 6px}
-    .player{width:36px;height:36px;background:conic-gradient(from 0deg,#00e5ff,#7a7cff,#00e5ff);border:2px solid #baf3ff;border-radius:10px;box-shadow:0 0 14px rgba(0,229,255,.7)}
+    /* --- MEJORA: Animaciones y Efectos --- */
+    @keyframes pulse { 0%, 100% { box-shadow: 0 0 14px rgba(0,229,255,.7); } 50% { box-shadow: 0 0 24px 4px rgba(0,229,255,1); } }
+    @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 10%,30%,50%,70%,90%{transform:translateX(-5px)} 20%,40%,60%,80%{transform:translateX(5px)} }
+    .shake{animation:shake .3s ease-in-out;}
+    .pop { display: inline-block; animation: pop .3s ease; }
+
+    .tile{position:absolute;border-radius:8px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:800;padding:4px 6px; transition: opacity .3s ease, transform .3s ease;}
+    .player{width:36px;height:36px;background:conic-gradient(from 0deg,#00e5ff,#7a7cff,#00e5ff);border:2px solid #baf3ff;border-radius:10px;animation: pulse 2.5s ease-in-out infinite;}
     .player:after{content:"";position:absolute;top:-8px;left:50%;transform:translateX(-50%);width:10px;height:10px;border-radius:50%;background:#fff}
     .alarm{background:linear-gradient(180deg,#ff7070,#ff3b3b);border:2px solid #ffb3b3;color:#2c0000;box-shadow:0 0 18px rgba(255,59,59,.75);}
     .safe{background:linear-gradient(180deg,#b7ffb0,#59ff48);border:2px solid #e1ffe0;color:#083300;box-shadow:0 0 18px rgba(124,255,107,.7);}
     .alarm,.safe{padding:6px 8px;font-size:12px}
     .gate{background:linear-gradient(180deg,#0d8a9b,#064b53);border:2px dashed #4beaff;color:#bff7ff}
-    .switch{background:linear-gradient(180deg,#ffe27a,#ffc300);border:2px solid #fff1a3;color:#3b2d00;box-shadow:0 0 18px rgba(255,213,74,.6)}
+    .switch{background:linear-gradient(180deg,#ffe27a,#ffc300);border:2px solid #fff1a3;color:#3b2d00;box-shadow:0 0 18px rgba(255,213,74,.6); cursor:pointer;}
     .diamond{background:radial-gradient(circle at 20% 20%, #fff, #a8f3ff 40%, #00e5ff 70%, transparent 71%), linear-gradient(135deg,#e1fbff,#00e5ff);border:2px solid #bdf4ff;box-shadow:0 0 22px rgba(0,229,255,.9);width:40px;height:40px;border-radius:8px}
 
     /* Panels / modals */
     .panel{background:linear-gradient(180deg,#17265d,#0e173a);border:1px solid #263882;border-radius:16px;box-shadow:0 16px 40px rgba(0,0,0,.45), inset 0 0 40px rgba(0,229,255,.06);padding:16px}
-    #briefing,#passwordLab,#endScreen{position:fixed;inset:0;background:rgba(7,10,25,.6);display:none;align-items:center;justify-content:center;z-index:15}
-    .modal{max-width:980px;width:clamp(320px,92vw,980px)}
+    #briefing,#passwordLab,#endScreen{position:fixed;inset:0;background:rgba(7,10,25,.6);display:flex;align-items:center;justify-content:center;z-index:15;opacity:0;visibility:hidden;transition:opacity .4s ease, visibility .4s ease;}
+    #briefing.visible, #passwordLab.visible, #endScreen.visible { opacity:1; visibility:visible; }
+    #briefing.visible .modal, #passwordLab.visible .modal, #endScreen.visible .modal { transform: scale(1) translateY(0); }
+    .modal{max-width:980px;width:clamp(320px,92vw,980px);transform: scale(0.95) translateY(20px); transition: transform .4s ease;}
+
     .jefa{display:flex;gap:14px;align-items:flex-start}
     .avatar{min-width:72px;height:72px;border-radius:16px;background:conic-gradient(from 220deg,#00e5ff,#7cff6b,#00e5ff);box-shadow:0 4px 16px rgba(0,229,255,.4);position:relative}
     .avatar:after{content:"🎧";position:absolute;right:-6px;top:-10px;font-size:28px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.6))}
@@ -55,17 +67,17 @@
     /* Password Lab */
     #lab{display:grid;grid-template-columns:1.2fr .8fr;gap:14px}
     #pool,.drop{min-height:220px;border:2px dashed #2c4bd6;border-radius:12px;padding:10px;background:rgba(0,229,255,.06)}
-    #pool{display:flex;flex-wrap:wrap;gap:6px}
-    .token{user-select:none;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;background:linear-gradient(180deg,#20336f,#17265d);border:1px solid #2d4bd2;box-shadow:0 6px 14px rgba(0,0,0,.35);font-weight:900;cursor:grab}
-    .token:active{cursor:grabbing}
-    .slot{display:inline-flex;min-width:30px;height:38px;align-items:center;justify-content:center;border-radius:8px;background:rgba(255,255,255,.06);border:1px dashed #3b58da;margin:2px;padding:2px 6px}
+    #pool{display:flex;flex-wrap:wrap;gap:6px;align-content:flex-start}
+    .token{user-select:none;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;background:linear-gradient(180deg,#20336f,#17265d);border:1px solid #2d4bd2;box-shadow:0 6px 14px rgba(0,0,0,.35);font-weight:900;cursor:grab;transition:transform .2s ease, box-shadow .2s ease}
+    .token:active{cursor:grabbing;transform:scale(1.15);box-shadow:0 8px 20px rgba(0,0,0,.5);}
+    .slot{display:inline-flex;min-width:30px;height:38px;align-items:center;justify-content:center;border-radius:8px;background:rgba(255,255,255,.06);border:1px dashed #3b58da;margin:2px;padding:2px 6px;animation: pop 0.2s ease-out;}
     .req{display:flex;flex-wrap:wrap;gap:6px}
-    .req .r{padding:6px 8px;border-radius:999px;background:rgba(124,255,107,.1);border:1px solid rgba(124,255,107,.4);font-size:12px}
+    .req .r{padding:6px 8px;border-radius:999px;background:rgba(124,255,107,.1);border:1px solid rgba(124,255,107,.4);font-size:12px;transition:background .3s, border-color .3s}
     .req .bad{background:rgba(255,59,59,.12);border-color:rgba(255,59,59,.4)}
 
     /* Touch joystick */
     #controls{position:fixed;left:10px;bottom:10px;z-index:12;display:grid;grid-template-columns:60px 60px 60px;grid-template-rows:60px 60px 60px;gap:6px;opacity:.9}
-    .pad{background:linear-gradient(180deg,#22346b,#1a275f);border:1px solid #2b3f84;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:900;box-shadow:0 12px 24px rgba(0,0,0,.35)}
+    .pad{background:linear-gradient(180deg,#22346b,#1a275f);border:1px solid #2b3f84;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:900;box-shadow:0 12px 24px rgba(0,0,0,.35);-webkit-tap-highlight-color: transparent;}
     .pad:active{transform:translateY(2px)}
     .pad span{font-size:18px}
     .pad.blank{background:transparent;border:none;box-shadow:none}
@@ -73,7 +85,6 @@
     footer{display:flex;gap:10px;align-items:center;justify-content:space-between;opacity:.9}
     footer small{color:var(--muted)}
 
-    /* Accessibility helpers */
     .sr{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
   </style>
 </head>
@@ -104,7 +115,6 @@
   </footer>
 </div>
 
-<!-- Briefing Modal -->
 <div id="briefing">
   <div class="modal panel">
     <h2>🔷 BRIEFING: Operación “Diamante de la Información”</h2>
@@ -128,14 +138,13 @@
   </div>
 </div>
 
-<!-- Password Lab Modal -->
 <div id="passwordLab">
   <div class="modal panel">
     <h2>🧪 Laboratorio de Contraseñas: Craftea la llave</h2>
     <p>Arrastra letras, números y símbolos a los <strong>slots</strong> para crear tu contraseña. Debe cumplir los requisitos.</p>
     <div id="lab">
       <div>
-        <h3>Pool</h3>
+        <h3>Pool de Caracteres</h3>
         <div id="pool" class="drop" aria-label="Zona con piezas para arrastrar"></div>
         <div style="margin-top:8px" class="req" id="reqList">
           <div class="r bad" data-req="len">≥ 8 caracteres</div>
@@ -159,12 +168,10 @@
   </div>
 </div>
 
-<!-- End/Victory Modal -->
 <div id="endScreen">
   <div class="modal panel" id="endPanel"></div>
 </div>
 
-<!-- Touch Controls -->
 <div id="controls" aria-hidden="true">
   <div class="pad blank"></div>
   <button class="pad" data-dx="0" data-dy="-1"><span>▲</span></button>
@@ -193,11 +200,12 @@
   const speakBtn = document.getElementById('speakBtn');
   const restartBtn = document.getElementById('restartBtn');
 
-  const S = { // sizes
+  const S = {
     W: 960,
     H: 540,
     grid: 36,
-    speed: 2.4,
+    speed: 3.2,
+    friction: 0.88,
   };
 
   const state = {
@@ -206,49 +214,79 @@
     stealth: 100,
     alerts: 0,
     keys: {up:false,down:false,left:false,right:false},
-    player: {x:40,y:240,w:36,h:36},
-    movers: [], // alarms & safe ads
+    player: {x:40,y:240,w:36,h:36, vx:0, vy:0},
+    movers: [],
     gates: [],
     objects: [],
     level: 0,
     voiced: false,
+    raf: null,
   };
 
-  function setPhase(p){ state.phase=p; phaseEl.textContent=p; }
-  function addScore(n){ state.score+=n; scoreEl.textContent=state.score; }
-  function setStealth(n){ state.stealth=Math.max(0,Math.min(100,n)); stealthEl.textContent=state.stealth; }
-  function addAlert(){ state.alerts++; alertsEl.textContent=state.alerts; if(state.alerts>=5) return defeat('Activaste demasiadas alarmas.'); }
+  function createParticles(x, y, color, count = 10) {
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('div');
+      p.style.position = 'absolute'; p.style.left = x + 'px'; p.style.top = y + 'px';
+      const size = Math.random() * 5 + 2;
+      p.style.width = size + 'px'; p.style.height = size + 'px';
+      p.style.background = color; p.style.borderRadius = '50%'; p.style.pointerEvents = 'none';
+      arena.appendChild(p);
 
-  // ------- Audio (WebAudio tones) -------
+      const angle = Math.random() * Math.PI * 2;
+      const speed = Math.random() * 3 + 1;
+      const vx = Math.cos(angle) * speed;
+      const vy = Math.sin(angle) * speed;
+      let life = Math.random() * 0.5 + 0.5;
+
+      function animateParticle() {
+        p.style.left = (parseFloat(p.style.left) + vx) + 'px';
+        p.style.top = (parseFloat(p.style.top) + vy) + 'px';
+        p.style.opacity = life;
+        life -= 0.02;
+        if (life > 0) requestAnimationFrame(animateParticle); else p.remove();
+      }
+      animateParticle();
+    }
+  }
+  
+  function popElement(el) { el.classList.add('pop'); el.addEventListener('animationend', () => el.classList.remove('pop'), { once: true }); }
+  function shakeScreen() { viewport.classList.add('shake'); viewport.addEventListener('animationend', () => viewport.classList.remove('shake'), { once: true }); }
+
+  function setPhase(p){ state.phase=p; phaseEl.textContent=p; }
+  function addScore(n){ state.score+=n; scoreEl.textContent=state.score; popElement(scoreEl); }
+  function setStealth(n){ state.stealth=Math.max(0,Math.min(100,n)); stealthEl.textContent=state.stealth; popElement(stealthEl); }
+  function addAlert(){
+    state.alerts++; alertsEl.textContent = state.alerts; popElement(alertsEl); shakeScreen();
+    viewport.style.borderColor = 'var(--danger)'; viewport.style.boxShadow = 'inset 0 0 50px rgba(255,59,59,.25)';
+    setTimeout(() => {
+      viewport.style.borderColor = '#1a275f'; viewport.style.boxShadow = 'inset 0 0 50px rgba(0,229,255,.08)';
+    }, 300);
+    if(state.alerts>=5) return defeat('Activaste demasiadas alarmas.');
+  }
+
   const ctx = new (window.AudioContext||window.webkitAudioContext)();
   function beep(type='sine', freq=600, ms=150, gain=0.06){
     try{
-      const o = ctx.createOscillator();
-      const g = ctx.createGain();
-      o.type = type; o.frequency.value=freq;
-      g.gain.value = gain; o.connect(g); g.connect(ctx.destination);
+      if(ctx.state==='suspended') ctx.resume();
+      const o = ctx.createOscillator(); const g = ctx.createGain();
+      o.type = type; o.frequency.value=freq; g.gain.value = gain; o.connect(g); g.connect(ctx.destination);
       o.start(); setTimeout(()=>{ o.stop(); }, ms);
-    }catch(e){}
+    }catch(e){ console.error('Audio context error:', e); }
   }
   function sfxStealth(){ beep('triangle', 520, 120, 0.05); speakLine('¡Bien esquivado, Agente!'); }
   function sfxAlarm(){ beep('square', 220, 220, 0.08); speakLine('¡Ese anuncio era una trampa!'); }
   function sfxLock(){ beep('sine', 820, 180, 0.06); speakLine('¡Acceso concedido!'); }
   function sfxGenius(){ beep('sawtooth', 660, 200, 0.06); speakLine('¡Maniobra de genio! ¡Ignoraste el engaño!'); }
 
-  // ------- Speech Synthesis -------
   function speakLine(text){
     if(!window.speechSynthesis) return;
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'es-MX'; u.rate = 1; u.pitch = 1; u.volume = 1;
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(u);
+    u.lang = 'es-MX'; u.rate = 1.1; u.pitch = 1; u.volume = 1;
+    window.speechSynthesis.cancel(); window.speechSynthesis.speak(u);
   }
-  document.getElementById('briefSpeak').onclick = () => {
-    speakLine('Agente, evita los anuncios trampa en rojo. Recoge los verdes para puntos. Crea contraseñas fuertes: ocho caracteres mínimo, una mayúscula, un número y un símbolo. ¡Suerte!');
-  };
+  document.getElementById('briefSpeak').onclick = () => speakLine('Agente, evita los anuncios trampa en rojo. Recoge los verdes para puntos. Crea contraseñas fuertes: ocho caracteres mínimo, una mayúscula, un número y un símbolo. ¡Suerte!');
   speakBtn.onclick = () => speakLine('Controles con flechas o pad táctil. Evita trampas rojas, toca anuncios verdes. Crea contraseñas fuertes para abrir puertas.');
 
-  // ------- Utility -------
   function rect(el, x,y,w,h, cls, label){
     const d = document.createElement('div');
     d.className = `tile ${cls}`; d.style.left=x+'px'; d.style.top=y+'px'; d.style.width=w+'px'; d.style.height=h+'px';
@@ -257,283 +295,143 @@
   }
   function aabb(a,b){ return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y; }
 
-  // ------- Levels -------
   function buildHallway(){
-    setPhase('Pasillo de las Alarmas'); arena.innerHTML='';
-    arena.style.width=S.W+'px'; arena.style.height=S.H+'px';
-    viewport.style.height = 'calc(100vh - 170px)';
-    viewport.style.minHeight = '380px';
-
-    // Player spawn
-    state.player = {x:20,y:S.H/2-18,w:36,h:36};
+    setPhase('Pasillo de las Alarmas'); arena.innerHTML=''; arena.style.width=S.W+'px'; arena.style.height=S.H+'px';
+    state.player = {x:20,y:S.H/2-18,w:36,h:36,vx:0,vy:0};
     const pEl = rect(arena, state.player.x, state.player.y, 36,36, 'player');
-    pEl.id='player';
-
-    // Gate to password lab
     const gate = {x:S.W-80,y:S.H/2-40,w:60,h:80};
-    rect(arena, gate.x, gate.y, gate.w, gate.h, 'gate', '🔐 Cerradura');
-    state.gates = [gate];
-
-    // Movers: red alarms + green safe ads
+    rect(arena, gate.x, gate.y, gate.w, gate.h, 'gate', '🔐 Cerradura'); state.gates = [gate];
     const bait = ['¡Ganaste un millón de monedas!','¡Última oportunidad!','¡¡No creerás lo que hizo este youtuber!!'];
     const goods = ['Consejo: ¡Piensa antes de hacer clic!','Agencia: Verifica la fuente.','Tip: Desconfía de premios mágicos.'];
     state.movers = [];
-
     function addMover(kind){
       const w=120,h=40; let x=200+Math.random()*(S.W-340), y=40+Math.random()*(S.H-80);
       const speed = (kind==='alarm'? 1.4: 1.0) + Math.random()*0.9;
       const dir = Math.random()<.5?1:-1; const vx = (Math.random()<.5?speed:0)*dir; const vy = (vx===0?speed:0)*(Math.random()<.5?1:-1);
-      const label = kind==='alarm'? bait[Math|0, Math.floor(Math.random()*bait.length)] : goods[Math.floor(Math.random()*goods.length)];
-      const el = rect(arena, x,y,w,h, kind==='alarm'?'alarm':'safe', label);
-      const m = {kind,x,y,w,h,vx,vy,el,hit:false};
-      state.movers.push(m);
+      const label = kind==='alarm'? bait[Math.floor(Math.random()*bait.length)] : goods[Math.floor(Math.random()*goods.length)];
+      const el = rect(arena, x,y,w,h, kind==='alarm'?'alarm':'safe', label); state.movers.push({kind,x,y,w,h,vx,vy,el,hit:false});
     }
-    for(let i=0;i<6;i++) addMover('alarm');
-    for(let i=0;i<3;i++) addMover('safe');
-
-    // Walls (visual hints): just glowing lanes
-    for(let i=0;i<10;i++){
-      const y = i*54+6; const lane = rect(arena, 0,y, S.W, 2, '', '');
-      lane.style.background = 'linear-gradient(90deg, transparent, rgba(0,229,255,.18), transparent)';
-    }
-
-    // Game loop for hallway
-    let raf;
+    for(let i=0;i<6;i++) addMover('alarm'); for(let i=0;i<3;i++) addMover('safe');
+    for(let i=0;i<10;i++){ const y = i*54+6; const lane = rect(arena, 0,y, S.W, 2, '', ''); lane.style.background = 'linear-gradient(90deg, transparent, rgba(0,229,255,.18), transparent)';}
+    
     function loop(){
-      // move player
-      const sp = S.speed;
-      if(state.keys.left) state.player.x -= sp;
-      if(state.keys.right) state.player.x += sp;
-      if(state.keys.up) state.player.y -= sp;
-      if(state.keys.down) state.player.y += sp;
-      state.player.x = Math.max(0, Math.min(S.W-36, state.player.x));
-      state.player.y = Math.max(0, Math.min(S.H-36, state.player.y));
-      pEl.style.left = state.player.x+'px'; pEl.style.top = state.player.y+'px';
-
-      // move movers
+      if (state.phase !== 'Pasillo de las Alarmas') return;
+      const p = state.player;
+      if(state.keys.left) p.vx -= S.speed/4; if(state.keys.right) p.vx += S.speed/4;
+      if(state.keys.up) p.vy -= S.speed/4; if(state.keys.down) p.vy += S.speed/4;
+      p.vx *= S.friction; p.vy *= S.friction;
+      const speedMagnitude = Math.sqrt(p.vx*p.vx + p.vy*p.vy);
+      if (speedMagnitude > S.speed) { p.vx = (p.vx / speedMagnitude) * S.speed; p.vy = (p.vy / speedMagnitude) * S.speed; }
+      p.x += p.vx; p.y += p.vy;
+      p.x = Math.max(0, Math.min(S.W-p.w, p.x)); p.y = Math.max(0, Math.min(S.H-p.h, p.y));
+      pEl.style.transform = `translate(${p.x}px, ${p.y}px)`; pEl.style.left = '0px'; pEl.style.top = '0px';
+      
       for(const m of state.movers){
         m.x += m.vx; m.y += m.vy;
-        if(m.x<0||m.x+m.w>S.W) m.vx*=-1;
-        if(m.y<0||m.y+m.h>S.H) m.vy*=-1;
+        if(m.x<0||m.x+m.w>S.W) m.vx*=-1; if(m.y<0||m.y+m.h>S.H) m.vy*=-1;
         m.el.style.left=m.x+'px'; m.el.style.top=m.y+'px';
-
-        // collisions
-        if(aabb(state.player,m)){
-          if(m.kind==='alarm' && !m.hit){
-            m.hit=true; m.el.style.opacity=.7; m.el.style.filter='grayscale(40%)';
-            addAlert(); setStealth(state.stealth-18); addScore(-5); sfxAlarm();
-          } else if(m.kind==='safe' && !m.hit){
-            m.hit=true; m.el.style.opacity=.4; addScore(10); sfxStealth();
-          }
+        if(aabb(p,m)){
+          if(m.kind==='alarm' && !m.hit){ m.hit=true; m.el.style.opacity=.7; m.el.style.filter='grayscale(40%)'; createParticles(p.x + p.w/2, p.y + p.h/2, 'var(--danger)'); addAlert(); setStealth(state.stealth-18); addScore(-5); sfxAlarm(); }
+          else if(m.kind==='safe' && !m.hit){ m.hit=true; m.el.style.transform='scale(0)'; m.el.style.opacity=0; createParticles(p.x + p.w/2, p.y + p.h/2, 'var(--accent2)'); addScore(10); sfxStealth(); }
         }
       }
-
-      // gate
-      if(aabb(state.player, state.gates[0])){
-        cancelAnimationFrame(raf);
-        openPasswordLab();
-        return;
-      }
-      raf = requestAnimationFrame(loop);
+      if(aabb(p, state.gates[0])){ cancelAnimationFrame(state.raf); openPasswordLab(); return; }
+      state.raf = requestAnimationFrame(loop);
     }
-    raf = requestAnimationFrame(loop);
+    state.raf = requestAnimationFrame(loop);
   }
 
-  // ------- Password Lab -------
-  function openPasswordLab(){
-    setPhase('Cerraduras de Contraseña');
-    passwordLab.style.display='flex';
-    buildPool();
-  }
+  function openPasswordLab(){ setPhase('Cerraduras de Contraseña'); passwordLab.classList.add('visible'); buildPool(); }
 
   function buildPool(){
-    const pool = document.getElementById('pool');
-    const pwd = document.getElementById('pwd');
-    const preview = document.getElementById('pwdPreview');
-    const reqList = document.getElementById('reqList');
+    const pool = document.getElementById('pool'); const pwd = document.getElementById('pwd');
+    const preview = document.getElementById('pwdPreview'); const reqList = document.getElementById('reqList');
     pool.innerHTML=''; pwd.innerHTML=''; preview.textContent='(vacío)';
-
-    const alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const lower = 'abcdefghijklmnopqrstuvwxyz';
-    const nums = '0123456789';
-    const syms = '!@#$%^&*_-+=?';
-
-    const pieces = (alpha+lower+nums+syms).split('');
-    pieces.slice(0, 64).forEach(ch => pool.appendChild(makeToken(ch)));
-
+    const pieces = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*_-+=?'.split('');
+    for (let i = pieces.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [pieces[i], pieces[j]] = [pieces[j], pieces[i]]; }
+    pieces.slice(0, 48).forEach(ch => pool.appendChild(makeToken(ch)));
     function makeToken(ch){
       const t = document.createElement('div');
       t.className='token'; t.textContent=ch; t.draggable=true; t.tabIndex=0; t.setAttribute('role','button'); t.title='Arrastra para usar';
-      t.addEventListener('dragstart', e=>{ e.dataTransfer.setData('text/plain', ch); });
-      t.addEventListener('click', ()=>{ addToPwd(ch); });
-      return t;
+      t.addEventListener('dragstart', e=>{ e.dataTransfer.setData('text/plain', ch); e.currentTarget.style.opacity='0.5'; });
+      t.addEventListener('dragend', e=>{ e.currentTarget.style.opacity='1'; });
+      t.addEventListener('click', ()=>{ addToPwd(ch); }); return t;
     }
-
-    function addToPwd(ch){
-      const s = document.createElement('span'); s.className='slot'; s.textContent=ch; s.dataset.ch=ch;
-      s.addEventListener('click', ()=>{ s.remove(); updatePreview(); });
-      pwd.appendChild(s); updatePreview();
-    }
-
-    ;[pool,pwd].forEach(box=>{
-      box.addEventListener('dragover', e=>{ e.preventDefault(); });
-      box.addEventListener('drop', e=>{
-        e.preventDefault(); const ch = e.dataTransfer.getData('text/plain');
-        if(box===pwd) addToPwd(ch);
-      });
-    });
-
+    function addToPwd(ch){ const s = document.createElement('span'); s.className='slot'; s.textContent=ch; s.dataset.ch=ch; s.addEventListener('click', ()=>{ s.remove(); updatePreview(); }); pwd.appendChild(s); updatePreview(); }
+    [pool,pwd].forEach(box=>{ box.addEventListener('dragover', e=>e.preventDefault()); box.addEventListener('drop', e=>{ e.preventDefault(); const ch = e.dataTransfer.getData('text/plain'); if(box===pwd) addToPwd(ch); }); });
     document.getElementById('clearPwd').onclick = ()=>{ pwd.innerHTML=''; updatePreview(); };
-    document.getElementById('submitPwd').onclick = ()=>{
-      const pass = collect();
-      const ok = validate(pass);
-      if(ok){ sfxLock(); passwordLab.style.display='none'; buildFinalRoom(); }
-      else { sfxAlarm(); }
-    };
-
-    function collect(){
-      const chars = [...pwd.querySelectorAll('.slot')].map(s=>s.dataset.ch);
-      return chars.join('');
-    }
-    function updatePreview(){
-      const pass = collect(); preview.textContent = pass || '(vacío)';
-      validate(pass, true);
-    }
-    function setReq(id, good){
-      const el = reqList.querySelector(`[data-req="${id}"]`);
-      el.classList.toggle('bad', !good);
-    }
-    function validate(pass, soft){
-      const okLen = pass.length>=8;
-      const okUpper = /[A-Z]/.test(pass);
-      const okNum = /[0-9]/.test(pass);
-      const okSym = /[!@#$%^&*_\-+=?]/.test(pass);
-      const notCommon = !/(password|admin|qwerty|abc|1234)/i.test(pass);
-      setReq('len', okLen); setReq('upper', okUpper); setReq('num', okNum); setReq('sym', okSym);
-      if(!soft){ addScore(okLen+okUpper+okNum+okSym+notCommon); }
-      return okLen && okUpper && okNum && okSym && notCommon;
-    }
+    document.getElementById('submitPwd').onclick = ()=>{ const pass = collect(); const ok = validate(pass); if(ok){ sfxLock(); passwordLab.classList.remove('visible'); buildFinalRoom(); } else { sfxAlarm(); shakeScreen(); } };
+    const collect = () => [...pwd.querySelectorAll('.slot')].map(s=>s.dataset.ch).join('');
+    function updatePreview(){ const pass = collect(); preview.textContent = pass || '(vacío)'; validate(pass, true); }
+    function setReq(id, good){ const el = reqList.querySelector(`[data-req="${id}"]`); const wasBad = el.classList.contains('bad'); el.classList.toggle('bad', !good); if (wasBad && !el.classList.contains('bad')) { beep('sine', 1200, 80, 0.04); } }
+    function validate(pass, soft){ const okLen = pass.length>=8, okUpper = /[A-Z]/.test(pass), okNum = /[0-9]/.test(pass), okSym = /[!@#$%^&*_\-+=?]/.test(pass), notCommon = !/(password|admin|qwerty|abc|1234)/i.test(pass); setReq('len', okLen); setReq('upper', okUpper); setReq('num', okNum); setReq('sym', okSym); if(!soft){ addScore((okLen+okUpper+okNum+okSym+notCommon)*2); } return okLen && okUpper && okNum && okSym && notCommon; }
   }
 
-  // ------- Final Room -------
   function buildFinalRoom(){
     setPhase('Cámara del Diamante'); arena.innerHTML='';
-    // layout
     const w=S.W, h=S.H; arena.style.width=w+'px'; arena.style.height=h+'px';
-    const pEl = rect(arena, 40, h-80, 36,36, 'player');
-    state.player = {x:40,y:h-80,w:36,h:36};
-
-    // Super alarms
-    const msgs = [
-      '🔥 ¡Última oferta exclusiva!','💰 ¡Reclama tu MILLÓN ahora!','🎥 ¡No creerás lo que hizo este youtuber!'
-    ];
-    const alarms = [
-      rect(arena, 260, 120, 180, 50, 'alarm', msgs[0]),
-      rect(arena, 520, 220, 180, 50, 'alarm', msgs[1]),
-      rect(arena, 340, 340, 220, 50, 'alarm', msgs[2]),
-    ];
-    const aBoxes = [
-      {x:260,y:120,w:180,h:50},
-      {x:520,y:220,w:180,h:50},
-      {x:340,y:340,w:220,h:50},
-    ];
-
-    // Hidden switch
-    const switchBox = {x:w-110,y:40,w:70,h:40};
-    const sw = rect(arena, switchBox.x, switchBox.y, switchBox.w, switchBox.h, 'switch', '⏻ Interruptor');
-    sw.style.opacity=.7; sw.title='Haz click para desactivar';
-
+    state.player = {x:40,y:h-80,w:36,h:36,vx:0,vy:0};
+    const pEl = rect(arena, state.player.x, state.player.y, 36,36, 'player');
+    const msgs = ['🔥 ¡Última oferta exclusiva!','💰 ¡Reclama tu MILLÓN ahora!','🎥 ¡No creerás lo que hizo este youtuber!'];
+    const alarms = [rect(arena, 260, 120, 180, 50, 'alarm', msgs[0]), rect(arena, 520, 220, 180, 50, 'alarm', msgs[1]), rect(arena, 340, 340, 220, 50, 'alarm', msgs[2])];
+    const aBoxes = alarms.map(a => ({x:a.offsetLeft, y:a.offsetTop, w:a.offsetWidth, h:a.offsetHeight, el: a, hit: false}));
+    const sw = rect(arena, w-110, 40, 70, 40, 'switch', '⏻'); sw.title='Haz click para desactivar';
     sw.addEventListener('click', ()=>{
-      sfxGenius(); alarms.forEach(a=>{ a.style.opacity=.25; a.style.filter='grayscale(100%)'; a.style.textDecoration='line-through'; });
-      setTimeout(()=>victory(), 1000);
+      sfxGenius(); aBoxes.forEach(a=>{ a.el.style.opacity=.25; a.el.style.filter='grayscale(100%)'; a.el.style.textDecoration='line-through'; a.hit = true; });
+      addScore(50); diamond.style.display='flex'; diamond.style.transform = 'scale(1)'; sw.style.pointerEvents = 'none'; sw.style.opacity = 0.5;
     });
+    const diamond = rect(arena, w/2-20, h/2-60, 40,40, 'diamond');
+    diamond.style.display='none'; diamond.style.transform = 'scale(0)'; diamond.style.transition = 'transform .5s cubic-bezier(0.68, -0.55, 0.27, 1.55)';
+    
+    // --- CORRECCIÓN APLICADA ---
+    const diamondBox = {x: w/2-20, y: h/2-60, w:40,h:40};
 
-    // Diamond (appears on victory)
-    const diamond = rect(arena, w-120, h/2-20, 40,40, 'diamond');
-    diamond.style.display='none';
-
-    // movement loop
-    let raf;
     function loop(){
-      const sp = S.speed;
-      if(state.keys.left) state.player.x -= sp;
-      if(state.keys.right) state.player.x += sp;
-      if(state.keys.up) state.player.y -= sp;
-      if(state.keys.down) state.player.y += sp;
-      state.player.x = Math.max(0, Math.min(w-36, state.player.x));
-      state.player.y = Math.max(0, Math.min(h-36, state.player.y));
-      pEl.style.left = state.player.x+'px'; pEl.style.top = state.player.y+'px';
-
-      // touching super alarms -> fail
-      for(const box of aBoxes){
-        if(aabb(state.player, box)){
-          cancelAnimationFrame(raf);
-          return defeat('Las Súper Alarmas te atraparon. Truco: ignóralas y busca el interruptor.');
-        }
-      }
-
-      raf = requestAnimationFrame(loop);
+      if(state.phase !== 'Cámara del Diamante') return;
+      const p = state.player;
+      if(state.keys.left) p.vx -= S.speed/4; if(state.keys.right) p.vx += S.speed/4; if(state.keys.up) p.vy -= S.speed/4; if(state.keys.down) p.vy += S.speed/4;
+      p.vx *= S.friction; p.vy *= S.friction;
+      const speedMagnitude = Math.sqrt(p.vx*p.vx + p.vy*p.vy);
+      if (speedMagnitude > S.speed) { p.vx = (p.vx / speedMagnitude) * S.speed; p.vy = (p.vy / speedMagnitude) * S.speed; }
+      p.x += p.vx; p.y += p.vy;
+      p.x = Math.max(0, Math.min(w-p.w, p.x)); p.y = Math.max(0, Math.min(h-p.h, p.y));
+      pEl.style.transform = `translate(${p.x}px, ${p.y}px)`; pEl.style.left = '0px'; pEl.style.top = '0px';
+      for(const box of aBoxes){ if(!box.hit && aabb(p, box)){ cancelAnimationFrame(state.raf); return defeat('Las Súper Alarmas te atraparon. Truco: ignóralas y busca el interruptor.'); } }
+      if(diamond.style.display !== 'none' && aabb(p, diamondBox)){ cancelAnimationFrame(state.raf); return victory(); }
+      state.raf = requestAnimationFrame(loop);
     }
-    raf = requestAnimationFrame(loop);
+    state.raf = requestAnimationFrame(loop);
 
     function victory(){
-      diamond.style.display='block';
-      endPanel.innerHTML = `
-        <h2>🏆 ¡Misión cumplida, Agente Maestro Anti-Trampas!</h2>
-        <p>Recuperaste el <strong>Diamante de la Información</strong> y desactivaste las Súper Alarmas sin caer en el clickbait.</p>
-        <ul>
-          <li>Puntaje final: <strong>${state.score}</strong></li>
-          <li>Sigilo: <strong>${state.stealth}</strong></li>
-          <li>Alarmas activadas: <strong>${state.alerts}</strong></li>
-        </ul>
-        <p>Recuerda: <em>Pensar antes de hacer clic</em> y usar <strong>contraseñas fuertes</strong> te mantiene a salvo.</p>
-        <div class="voiceRow"><button class="btn" onclick="location.reload()">Jugar de nuevo</button></div>
-      `;
-      endScreen.style.display='flex';
+      endPanel.innerHTML = `<h2>🏆 ¡Misión cumplida, Agente Maestro Anti-Trampas!</h2><p>Recuperaste el <strong>Diamante de la Información</strong> y desactivaste las Súper Alarmas sin caer en el clickbait.</p><ul><li>Puntaje final: <strong>${state.score}</strong></li><li>Sigilo: <strong>${state.stealth}</strong></li><li>Alarmas activadas: <strong>${state.alerts}</strong></li></ul><p>Recuerda: <em>Pensar antes de hacer clic</em> y usar <strong>contraseñas fuertes</strong> te mantiene a salvo.</p><div class="voiceRow"><button class="btn" id="playAgainBtn">Jugar de nuevo</button></div>`;
+      endScreen.classList.add('visible'); document.getElementById('playAgainBtn').onclick = ()=> location.reload();
     }
   }
 
   function defeat(reason){
-    endPanel.innerHTML = `
-      <h2>🔔 ¡Capturado!</h2>
-      <p>${reason}</p>
-      <h3>Escena de Aprendizaje</h3>
-      <ul>
-        <li>Desconfía de mensajes con prisa: “Última oportunidad” busca que no pienses.</li>
-        <li>Nadie regala millones de monedas por nada. Verifica la fuente.</li>
-        <li>Para contraseñas fuertes: mezcla <strong>Mayúsculas</strong>, <strong>números</strong> y <strong>símbolos</strong> y evita palabras comunes.</li>
-      </ul>
-      <div class="voiceRow"><button class="btn" onclick="location.reload()">Reintentar</button></div>
-    `;
-    endScreen.style.display='flex';
-    sfxAlarm();
+    if (state.raf) cancelAnimationFrame(state.raf);
+    endPanel.innerHTML = `<h2>🔔 ¡Capturado!</h2><p>${reason}</p><h3>Lección de Ciberseguridad</h3><ul><li>Desconfía de mensajes con prisa: “Última oportunidad” busca que no pienses.</li><li>Nadie regala millones de monedas por nada. Verifica la fuente.</li><li>Para contraseñas fuertes: mezcla <strong>Mayúsculas</strong>, <strong>números</strong> y <strong>símbolos</strong> y evita palabras comunes.</li></ul><div class="voiceRow"><button class="btn" id="retryBtn">Reintentar</button></div>`;
+    endScreen.classList.add('visible'); document.getElementById('retryBtn').onclick = ()=> location.reload(); sfxAlarm();
   }
 
-  // ------- Input Handling -------
   const keyMap = {ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right','w':'up','a':'left','s':'down','d':'right'};
   window.addEventListener('keydown', e=>{ const k = keyMap[e.key]; if(k){ state.keys[k]=true; e.preventDefault(); } });
   window.addEventListener('keyup', e=>{ const k = keyMap[e.key]; if(k){ state.keys[k]=false; e.preventDefault(); } });
 
   document.querySelectorAll('#controls .pad').forEach(btn=>{
-    const dx = parseInt(btn.dataset.dx||'0');
-    const dy = parseInt(btn.dataset.dy||'0');
     if(btn.classList.contains('blank')) return;
-    let tid;
+    const dx = parseInt(btn.dataset.dx||'0'); const dy = parseInt(btn.dataset.dy||'0');
     function press(){ if(dx<0) state.keys.left=true; if(dx>0) state.keys.right=true; if(dy<0) state.keys.up=true; if(dy>0) state.keys.down=true; }
     function release(){ if(dx<0) state.keys.left=false; if(dx>0) state.keys.right=false; if(dy<0) state.keys.up=false; if(dy>0) state.keys.down=false; }
-    btn.addEventListener('touchstart', e=>{ e.preventDefault(); press(); });
+    btn.addEventListener('touchstart', e=>{ e.preventDefault(); press(); }, {passive: false});
     btn.addEventListener('touchend', e=>{ e.preventDefault(); release(); });
-    btn.addEventListener('mousedown', e=>{ e.preventDefault(); press(); tid=setInterval(press, 100); });
-    btn.addEventListener('mouseup', e=>{ clearInterval(tid); release(); });
-    btn.addEventListener('mouseleave', e=>{ clearInterval(tid); release(); });
+    btn.addEventListener('mousedown', e=>{ e.preventDefault(); press(); });
+    btn.addEventListener('mouseup', release); btn.addEventListener('mouseleave', release);
   });
 
-  // ------- Flow control -------
-  document.getElementById('startBtn').onclick = ()=>{ briefing.style.display='none'; buildHallway(); };
+  document.getElementById('startBtn').onclick = ()=>{ briefing.classList.remove('visible'); if(ctx.state === 'suspended') ctx.resume(); buildHallway(); };
   restartBtn.onclick = ()=> location.reload();
-
-  // show briefing at start
-  briefing.style.display='flex';
+  briefing.classList.add('visible');
 })();
 </script>
 </body>
