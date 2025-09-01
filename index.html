@@ -35,7 +35,6 @@
     #viewport{position:relative;overflow:hidden;border-radius:16px;background:radial-gradient(1200px 800px at 70% 10%, #16224f 0%, var(--bg) 60%);border:2px solid #1a275f;box-shadow:inset 0 0 50px rgba(0,229,255,.08);transition: box-shadow .2s ease, border-color .2s ease}
     #arena{position:absolute;inset:0;}
 
-    /* --- MEJORA: Animaciones y Efectos --- */
     @keyframes pulse { 0%, 100% { box-shadow: 0 0 14px rgba(0,229,255,.7); } 50% { box-shadow: 0 0 24px 4px rgba(0,229,255,1); } }
     @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
     @keyframes shake { 0%,100%{transform:translateX(0)} 10%,30%,50%,70%,90%{transform:translateX(-5px)} 20%,40%,60%,80%{transform:translateX(5px)} }
@@ -47,24 +46,21 @@
     .player:after{content:"";position:absolute;top:-8px;left:50%;transform:translateX(-50%);width:10px;height:10px;border-radius:50%;background:#fff}
     .alarm{background:linear-gradient(180deg,#ff7070,#ff3b3b);border:2px solid #ffb3b3;color:#2c0000;box-shadow:0 0 18px rgba(255,59,59,.75);}
     .safe{background:linear-gradient(180deg,#b7ffb0,#59ff48);border:2px solid #e1ffe0;color:#083300;box-shadow:0 0 18px rgba(124,255,107,.7);}
-    .alarm,.safe{padding:6px 8px;font-size:12px}
+    .alarm,.safe{padding:6px 8px;font-size:12px; line-height: 1.2;}
     .gate{background:linear-gradient(180deg,#0d8a9b,#064b53);border:2px dashed #4beaff;color:#bff7ff}
     .switch{background:linear-gradient(180deg,#ffe27a,#ffc300);border:2px solid #fff1a3;color:#3b2d00;box-shadow:0 0 18px rgba(255,213,74,.6); cursor:pointer;}
     .diamond{background:radial-gradient(circle at 20% 20%, #fff, #a8f3ff 40%, #00e5ff 70%, transparent 71%), linear-gradient(135deg,#e1fbff,#00e5ff);border:2px solid #bdf4ff;box-shadow:0 0 22px rgba(0,229,255,.9);width:40px;height:40px;border-radius:8px}
 
-    /* Panels / modals */
     .panel{background:linear-gradient(180deg,#17265d,#0e173a);border:1px solid #263882;border-radius:16px;box-shadow:0 16px 40px rgba(0,0,0,.45), inset 0 0 40px rgba(0,229,255,.06);padding:16px}
     #briefing,#passwordLab,#endScreen{position:fixed;inset:0;background:rgba(7,10,25,.6);display:flex;align-items:center;justify-content:center;z-index:15;opacity:0;visibility:hidden;transition:opacity .4s ease, visibility .4s ease;}
     #briefing.visible, #passwordLab.visible, #endScreen.visible { opacity:1; visibility:visible; }
     #briefing.visible .modal, #passwordLab.visible .modal, #endScreen.visible .modal { transform: scale(1) translateY(0); }
     .modal{max-width:980px;width:clamp(320px,92vw,980px);transform: scale(0.95) translateY(20px); transition: transform .4s ease;}
-
     .jefa{display:flex;gap:14px;align-items:flex-start}
     .avatar{min-width:72px;height:72px;border-radius:16px;background:conic-gradient(from 220deg,#00e5ff,#7cff6b,#00e5ff);box-shadow:0 4px 16px rgba(0,229,255,.4);position:relative}
     .avatar:after{content:"🎧";position:absolute;right:-6px;top:-10px;font-size:28px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.6))}
     .voiceRow{display:flex;gap:8px;align-items:center;margin-top:6px}
 
-    /* Password Lab */
     #lab{display:grid;grid-template-columns:1.2fr .8fr;gap:14px}
     #pool,.drop{min-height:220px;border:2px dashed #2c4bd6;border-radius:12px;padding:10px;background:rgba(0,229,255,.06)}
     #pool{display:flex;flex-wrap:wrap;gap:6px;align-content:flex-start}
@@ -75,7 +71,6 @@
     .req .r{padding:6px 8px;border-radius:999px;background:rgba(124,255,107,.1);border:1px solid rgba(124,255,107,.4);font-size:12px;transition:background .3s, border-color .3s}
     .req .bad{background:rgba(255,59,59,.12);border-color:rgba(255,59,59,.4)}
 
-    /* Touch joystick */
     #controls{position:fixed;left:10px;bottom:10px;z-index:12;display:grid;grid-template-columns:60px 60px 60px;grid-template-rows:60px 60px 60px;gap:6px;opacity:.9}
     .pad{background:linear-gradient(180deg,#22346b,#1a275f);border:1px solid #2b3f84;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:900;box-shadow:0 12px 24px rgba(0,0,0,.35);-webkit-tap-highlight-color: transparent;}
     .pad:active{transform:translateY(2px)}
@@ -84,7 +79,6 @@
 
     footer{display:flex;gap:10px;align-items:center;justify-content:space-between;opacity:.9}
     footer small{color:var(--muted)}
-
     .sr{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
   </style>
 </head>
@@ -102,19 +96,12 @@
       <button class="btn" id="restartBtn" title="Reiniciar">↻ Reiniciar</button>
     </div>
   </header>
-
-  <main id="viewport" class="panel" aria-live="polite">
-    <div id="arena"></div>
-  </main>
-
+  <main id="viewport" class="panel" aria-live="polite"><div id="arena"></div></main>
   <footer>
-    <div>
-      <strong>Controles:</strong> Flechas / WASD o pad táctil. Toca/Click en puertas/interruptores.
-    </div>
+    <div><strong>Controles:</strong> Flechas / WASD o pad táctil. Toca/Click en puertas/interruptores.</div>
     <small>Agente Secreto: La Fortaleza del Phishing — Educación en Ciberseguridad (8–9 años)</small>
   </footer>
 </div>
-
 <div id="briefing">
   <div class="modal panel">
     <h2>🔷 BRIEFING: Operación “Diamante de la Información”</h2>
@@ -137,7 +124,6 @@
     </div>
   </div>
 </div>
-
 <div id="passwordLab">
   <div class="modal panel">
     <h2>🧪 Laboratorio de Contraseñas: Craftea la llave</h2>
@@ -156,9 +142,7 @@
       <div>
         <h3>Tu Contraseña</h3>
         <div id="pwd" class="drop" aria-label="Construye tu contraseña aquí"></div>
-        <div style="margin-top:10px">
-          <span>Vista previa: <code id="pwdPreview">(vacío)</code></span>
-        </div>
+        <div style="margin-top:10px"><span>Vista previa: <code id="pwdPreview">(vacío)</code></span></div>
         <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn" id="clearPwd">Limpiar</button>
           <button class="btn" id="submitPwd">Probar Cerradura</button>
@@ -167,132 +151,45 @@
     </div>
   </div>
 </div>
-
-<div id="endScreen">
-  <div class="modal panel" id="endPanel"></div>
-</div>
-
+<div id="endScreen"><div class="modal panel" id="endPanel"></div></div>
 <div id="controls" aria-hidden="true">
-  <div class="pad blank"></div>
-  <button class="pad" data-dx="0" data-dy="-1"><span>▲</span></button>
-  <div class="pad blank"></div>
-  <button class="pad" data-dx="-1" data-dy="0"><span>◀</span></button>
-  <div class="pad blank"></div>
-  <button class="pad" data-dx="1" data-dy="0"><span>▶</span></button>
-  <div class="pad blank"></div>
-  <button class="pad" data-dx="0" data-dy="1"><span>▼</span></button>
-  <div class="pad blank"></div>
+  <div class="pad blank"></div> <button class="pad" data-dx="0" data-dy="-1"><span>▲</span></button> <div class="pad blank"></div>
+  <button class="pad" data-dx="-1" data-dy="0"><span>◀</span></button> <div class="pad blank"></div> <button class="pad" data-dx="1" data-dy="0"><span>▶</span></button>
+  <div class="pad blank"></div> <button class="pad" data-dx="0" data-dy="1"><span>▼</span></button> <div class="pad blank"></div>
 </div>
 
 <script>
 (() => {
-  // ------- Game State -------
-  const viewport = document.getElementById('viewport');
-  const arena = document.getElementById('arena');
-  const phaseEl = document.getElementById('phase');
-  const scoreEl = document.getElementById('score');
-  const stealthEl = document.getElementById('stealth');
-  const alertsEl = document.getElementById('alerts');
-  const briefing = document.getElementById('briefing');
-  const passwordLab = document.getElementById('passwordLab');
-  const endScreen = document.getElementById('endScreen');
-  const endPanel = document.getElementById('endPanel');
-  const speakBtn = document.getElementById('speakBtn');
-  const restartBtn = document.getElementById('restartBtn');
+  const viewport = document.getElementById('viewport'); const arena = document.getElementById('arena');
+  const phaseEl = document.getElementById('phase'); const scoreEl = document.getElementById('score');
+  const stealthEl = document.getElementById('stealth'); const alertsEl = document.getElementById('alerts');
+  const briefing = document.getElementById('briefing'); const passwordLab = document.getElementById('passwordLab');
+  const endScreen = document.getElementById('endScreen'); const endPanel = document.getElementById('endPanel');
+  const speakBtn = document.getElementById('speakBtn'); const restartBtn = document.getElementById('restartBtn');
 
-  const S = {
-    W: 960,
-    H: 540,
-    grid: 36,
-    speed: 3.2,
-    friction: 0.88,
-  };
+  const PHISHING_PHRASES = [ "¡Gana un celular GRATIS en segundos!", "Descarga esta app para monedas ilimitadas en tu juego.", "Un amigo quiere compartir fotos contigo, inicia sesión para verlas.", "Completa esta encuesta y recibe un premio sorpresa.", "¡Oferta increíble! iPhones a mitad de precio solo por hoy.", "Tu paquete no se pudo entregar. Confirma tu dirección aquí.", "¡Felicidades! Has sido seleccionado para un premio exclusivo.", "¡Última oportunidad para reclamar tu regalo!", ];
+  const SAFE_PHRASES = [ "Consejo: ¡Piensa antes de hacer clic!", "Agencia: Verifica siempre la fuente.", "Tip: Desconfía de premios mágicos.", "¡Buen trabajo! Ignoraste la trampa.", "Esa es la actitud, agente.", "El remitente era sospechoso. Bien hecho.", ];
 
-  const state = {
-    phase: 'Briefing',
-    score: 0,
-    stealth: 100,
-    alerts: 0,
-    keys: {up:false,down:false,left:false,right:false},
-    player: {x:40,y:240,w:36,h:36, vx:0, vy:0},
-    movers: [],
-    gates: [],
-    objects: [],
-    level: 0,
-    voiced: false,
-    raf: null,
-  };
+  const S = { W: 960, H: 540, speed: 3.2, friction: 0.88 };
+  const state = { phase: 'Briefing', score: 0, stealth: 100, alerts: 0, keys: {up:false,down:false,left:false,right:false}, player: {x:40,y:240,w:36,h:36, vx:0, vy:0}, movers: [], gates: [], raf: null };
 
-  function createParticles(x, y, color, count = 10) {
-    for (let i = 0; i < count; i++) {
-      const p = document.createElement('div');
-      p.style.position = 'absolute'; p.style.left = x + 'px'; p.style.top = y + 'px';
-      const size = Math.random() * 5 + 2;
-      p.style.width = size + 'px'; p.style.height = size + 'px';
-      p.style.background = color; p.style.borderRadius = '50%'; p.style.pointerEvents = 'none';
-      arena.appendChild(p);
-
-      const angle = Math.random() * Math.PI * 2;
-      const speed = Math.random() * 3 + 1;
-      const vx = Math.cos(angle) * speed;
-      const vy = Math.sin(angle) * speed;
-      let life = Math.random() * 0.5 + 0.5;
-
-      function animateParticle() {
-        p.style.left = (parseFloat(p.style.left) + vx) + 'px';
-        p.style.top = (parseFloat(p.style.top) + vy) + 'px';
-        p.style.opacity = life;
-        life -= 0.02;
-        if (life > 0) requestAnimationFrame(animateParticle); else p.remove();
-      }
-      animateParticle();
-    }
-  }
-  
+  function createParticles(x, y, color, count = 10) { for (let i = 0; i < count; i++) { const p = document.createElement('div'); p.style.position = 'absolute'; p.style.left = x + 'px'; p.style.top = y + 'px'; const size = Math.random() * 5 + 2; p.style.width = size + 'px'; p.style.height = size + 'px'; p.style.background = color; p.style.borderRadius = '50%'; p.style.pointerEvents = 'none'; arena.appendChild(p); const angle = Math.random() * Math.PI * 2; const speed = Math.random() * 3 + 1; const vx = Math.cos(angle) * speed; const vy = Math.sin(angle) * speed; let life = Math.random() * 0.5 + 0.5; function animateParticle() { p.style.left = (parseFloat(p.style.left) + vx) + 'px'; p.style.top = (parseFloat(p.style.top) + vy) + 'px'; p.style.opacity = life; life -= 0.02; if (life > 0) requestAnimationFrame(animateParticle); else p.remove(); } animateParticle(); } }
   function popElement(el) { el.classList.add('pop'); el.addEventListener('animationend', () => el.classList.remove('pop'), { once: true }); }
   function shakeScreen() { viewport.classList.add('shake'); viewport.addEventListener('animationend', () => viewport.classList.remove('shake'), { once: true }); }
-
   function setPhase(p){ state.phase=p; phaseEl.textContent=p; }
   function addScore(n){ state.score+=n; scoreEl.textContent=state.score; popElement(scoreEl); }
   function setStealth(n){ state.stealth=Math.max(0,Math.min(100,n)); stealthEl.textContent=state.stealth; popElement(stealthEl); }
-  function addAlert(){
-    state.alerts++; alertsEl.textContent = state.alerts; popElement(alertsEl); shakeScreen();
-    viewport.style.borderColor = 'var(--danger)'; viewport.style.boxShadow = 'inset 0 0 50px rgba(255,59,59,.25)';
-    setTimeout(() => {
-      viewport.style.borderColor = '#1a275f'; viewport.style.boxShadow = 'inset 0 0 50px rgba(0,229,255,.08)';
-    }, 300);
-    if(state.alerts>=5) return defeat('Activaste demasiadas alarmas.');
-  }
-
+  function addAlert(){ state.alerts++; alertsEl.textContent = state.alerts; popElement(alertsEl); shakeScreen(); viewport.style.borderColor = 'var(--danger)'; viewport.style.boxShadow = 'inset 0 0 50px rgba(255,59,59,.25)'; setTimeout(() => { viewport.style.borderColor = '#1a275f'; viewport.style.boxShadow = 'inset 0 0 50px rgba(0,229,255,.08)'; }, 300); if(state.alerts>=5) return defeat('Activaste demasiadas alarmas.'); }
   const ctx = new (window.AudioContext||window.webkitAudioContext)();
-  function beep(type='sine', freq=600, ms=150, gain=0.06){
-    try{
-      if(ctx.state==='suspended') ctx.resume();
-      const o = ctx.createOscillator(); const g = ctx.createGain();
-      o.type = type; o.frequency.value=freq; g.gain.value = gain; o.connect(g); g.connect(ctx.destination);
-      o.start(); setTimeout(()=>{ o.stop(); }, ms);
-    }catch(e){ console.error('Audio context error:', e); }
-  }
+  function beep(type='sine', freq=600, ms=150, gain=0.06){ try{ if(ctx.state==='suspended') ctx.resume(); const o = ctx.createOscillator(); const g = ctx.createGain(); o.type = type; o.frequency.value=freq; g.gain.value = gain; o.connect(g); g.connect(ctx.destination); o.start(); setTimeout(()=>{ o.stop(); }, ms); }catch(e){} }
   function sfxStealth(){ beep('triangle', 520, 120, 0.05); speakLine('¡Bien esquivado, Agente!'); }
   function sfxAlarm(){ beep('square', 220, 220, 0.08); speakLine('¡Ese anuncio era una trampa!'); }
   function sfxLock(){ beep('sine', 820, 180, 0.06); speakLine('¡Acceso concedido!'); }
   function sfxGenius(){ beep('sawtooth', 660, 200, 0.06); speakLine('¡Maniobra de genio! ¡Ignoraste el engaño!'); }
-
-  function speakLine(text){
-    if(!window.speechSynthesis) return;
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'es-MX'; u.rate = 1.1; u.pitch = 1; u.volume = 1;
-    window.speechSynthesis.cancel(); window.speechSynthesis.speak(u);
-  }
+  function speakLine(text){ if(!window.speechSynthesis) return; const u = new SpeechSynthesisUtterance(text); u.lang = 'es-MX'; u.rate = 1.1; u.pitch = 1; u.volume = 1; window.speechSynthesis.cancel(); window.speechSynthesis.speak(u); }
   document.getElementById('briefSpeak').onclick = () => speakLine('Agente, evita los anuncios trampa en rojo. Recoge los verdes para puntos. Crea contraseñas fuertes: ocho caracteres mínimo, una mayúscula, un número y un símbolo. ¡Suerte!');
   speakBtn.onclick = () => speakLine('Controles con flechas o pad táctil. Evita trampas rojas, toca anuncios verdes. Crea contraseñas fuertes para abrir puertas.');
-
-  function rect(el, x,y,w,h, cls, label){
-    const d = document.createElement('div');
-    d.className = `tile ${cls}`; d.style.left=x+'px'; d.style.top=y+'px'; d.style.width=w+'px'; d.style.height=h+'px';
-    if(label) d.textContent=label;
-    el.appendChild(d); return d;
-  }
+  function rect(el, x,y,w,h, cls, label){ const d = document.createElement('div'); d.className = `tile ${cls}`; d.style.left=x+'px'; d.style.top=y+'px'; d.style.width=w+'px'; d.style.height=h+'px'; if(label) d.textContent=label; el.appendChild(d); return d; }
   function aabb(a,b){ return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y; }
 
   function buildHallway(){
@@ -301,136 +198,64 @@
     const pEl = rect(arena, state.player.x, state.player.y, 36,36, 'player');
     const gate = {x:S.W-80,y:S.H/2-40,w:60,h:80};
     rect(arena, gate.x, gate.y, gate.w, gate.h, 'gate', '🔐 Cerradura'); state.gates = [gate];
-    const bait = ['¡Ganaste un millón de monedas!','¡Última oportunidad!','¡¡No creerás lo que hizo este youtuber!!'];
-    const goods = ['Consejo: ¡Piensa antes de hacer clic!','Agencia: Verifica la fuente.','Tip: Desconfía de premios mágicos.'];
+    const shuffledBait = [...PHISHING_PHRASES].sort(() => 0.5 - Math.random()); const shuffledGoods = [...SAFE_PHRASES].sort(() => 0.5 - Math.random());
     state.movers = [];
-    function addMover(kind){
-      const w=120,h=40; let x=200+Math.random()*(S.W-340), y=40+Math.random()*(S.H-80);
-      const speed = (kind==='alarm'? 1.4: 1.0) + Math.random()*0.9;
-      const dir = Math.random()<.5?1:-1; const vx = (Math.random()<.5?speed:0)*dir; const vy = (vx===0?speed:0)*(Math.random()<.5?1:-1);
-      const label = kind==='alarm'? bait[Math.floor(Math.random()*bait.length)] : goods[Math.floor(Math.random()*goods.length)];
-      const el = rect(arena, x,y,w,h, kind==='alarm'?'alarm':'safe', label); state.movers.push({kind,x,y,w,h,vx,vy,el,hit:false});
-    }
-    for(let i=0;i<6;i++) addMover('alarm'); for(let i=0;i<3;i++) addMover('safe');
+    function addMover(kind, index){ const w=160,h=40; let x=200+Math.random()*(S.W-380), y=40+Math.random()*(S.H-80); const speed = (kind==='alarm'? 1.2: 1.0) + Math.random()*0.8; const dir = Math.random()<.5?1:-1; const vx = (Math.random()<.5?speed:0)*dir; const vy = (vx===0?speed:0)*(Math.random()<.5?1:-1); const label = kind==='alarm'? shuffledBait[index % shuffledBait.length] : shuffledGoods[index % shuffledGoods.length]; const el = rect(arena, x,y,w,h, kind==='alarm'?'alarm':'safe', label); state.movers.push({kind,x,y,w,h,vx,vy,el,hit:false}); }
+    for(let i=0;i<6;i++) addMover('alarm', i); for(let i=0;i<3;i++) addMover('safe', i);
     for(let i=0;i<10;i++){ const y = i*54+6; const lane = rect(arena, 0,y, S.W, 2, '', ''); lane.style.background = 'linear-gradient(90deg, transparent, rgba(0,229,255,.18), transparent)';}
-    
-    function loop(){
-      if (state.phase !== 'Pasillo de las Alarmas') return;
-      const p = state.player;
-      if(state.keys.left) p.vx -= S.speed/4; if(state.keys.right) p.vx += S.speed/4;
-      if(state.keys.up) p.vy -= S.speed/4; if(state.keys.down) p.vy += S.speed/4;
-      p.vx *= S.friction; p.vy *= S.friction;
-      const speedMagnitude = Math.sqrt(p.vx*p.vx + p.vy*p.vy);
-      if (speedMagnitude > S.speed) { p.vx = (p.vx / speedMagnitude) * S.speed; p.vy = (p.vy / speedMagnitude) * S.speed; }
-      p.x += p.vx; p.y += p.vy;
-      p.x = Math.max(0, Math.min(S.W-p.w, p.x)); p.y = Math.max(0, Math.min(S.H-p.h, p.y));
-      pEl.style.transform = `translate(${p.x}px, ${p.y}px)`; pEl.style.left = '0px'; pEl.style.top = '0px';
-      
-      for(const m of state.movers){
-        m.x += m.vx; m.y += m.vy;
-        if(m.x<0||m.x+m.w>S.W) m.vx*=-1; if(m.y<0||m.y+m.h>S.H) m.vy*=-1;
-        m.el.style.left=m.x+'px'; m.el.style.top=m.y+'px';
-        if(aabb(p,m)){
-          if(m.kind==='alarm' && !m.hit){ m.hit=true; m.el.style.opacity=.7; m.el.style.filter='grayscale(40%)'; createParticles(p.x + p.w/2, p.y + p.h/2, 'var(--danger)'); addAlert(); setStealth(state.stealth-18); addScore(-5); sfxAlarm(); }
-          else if(m.kind==='safe' && !m.hit){ m.hit=true; m.el.style.transform='scale(0)'; m.el.style.opacity=0; createParticles(p.x + p.w/2, p.y + p.h/2, 'var(--accent2)'); addScore(10); sfxStealth(); }
-        }
-      }
-      if(aabb(p, state.gates[0])){ cancelAnimationFrame(state.raf); openPasswordLab(); return; }
-      state.raf = requestAnimationFrame(loop);
-    }
+    function loop(){ if (state.phase !== 'Pasillo de las Alarmas') return; const p = state.player; if(state.keys.left) p.vx -= S.speed/4; if(state.keys.right) p.vx += S.speed/4; if(state.keys.up) p.vy -= S.speed/4; if(state.keys.down) p.vy += S.speed/4; p.vx *= S.friction; p.vy *= S.friction; const speedMagnitude = Math.sqrt(p.vx*p.vx + p.vy*p.vy); if (speedMagnitude > S.speed) { p.vx = (p.vx / speedMagnitude) * S.speed; p.vy = (p.vy / speedMagnitude) * S.speed; } p.x += p.vx; p.y += p.vy; p.x = Math.max(0, Math.min(S.W-p.w, p.x)); p.y = Math.max(0, Math.min(S.H-p.h, p.y)); pEl.style.transform = `translate(${p.x}px, ${p.y}px)`; pEl.style.left = '0px'; pEl.style.top = '0px'; for(const m of state.movers){ m.x += m.vx; m.y += m.vy; if(m.x<0||m.x+m.w>S.W) m.vx*=-1; if(m.y<0||m.y+m.h>S.H) m.vy*=-1; m.el.style.left=m.x+'px'; m.el.style.top=m.y+'px'; if(aabb(p,m)){ if(m.kind==='alarm' && !m.hit){ m.hit=true; m.el.style.opacity=.7; m.el.style.filter='grayscale(40%)'; createParticles(p.x + p.w/2, p.y + p.h/2, 'var(--danger)'); addAlert(); setStealth(state.stealth-18); addScore(-5); sfxAlarm(); } else if(m.kind==='safe' && !m.hit){ m.hit=true; m.el.style.transform='scale(0)'; m.el.style.opacity=0; createParticles(p.x + p.w/2, p.y + p.h/2, 'var(--accent2)'); addScore(10); sfxStealth(); } } } if(aabb(p, state.gates[0])){ cancelAnimationFrame(state.raf); openPasswordLab(); return; } state.raf = requestAnimationFrame(loop); }
     state.raf = requestAnimationFrame(loop);
   }
-
   function openPasswordLab(){ setPhase('Cerraduras de Contraseña'); passwordLab.classList.add('visible'); buildPool(); }
-
-  function buildPool(){
-    const pool = document.getElementById('pool'); const pwd = document.getElementById('pwd');
-    const preview = document.getElementById('pwdPreview'); const reqList = document.getElementById('reqList');
-    pool.innerHTML=''; pwd.innerHTML=''; preview.textContent='(vacío)';
-    const pieces = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*_-+=?'.split('');
-    for (let i = pieces.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [pieces[i], pieces[j]] = [pieces[j], pieces[i]]; }
-    pieces.slice(0, 48).forEach(ch => pool.appendChild(makeToken(ch)));
-    function makeToken(ch){
-      const t = document.createElement('div');
-      t.className='token'; t.textContent=ch; t.draggable=true; t.tabIndex=0; t.setAttribute('role','button'); t.title='Arrastra para usar';
-      t.addEventListener('dragstart', e=>{ e.dataTransfer.setData('text/plain', ch); e.currentTarget.style.opacity='0.5'; });
-      t.addEventListener('dragend', e=>{ e.currentTarget.style.opacity='1'; });
-      t.addEventListener('click', ()=>{ addToPwd(ch); }); return t;
-    }
-    function addToPwd(ch){ const s = document.createElement('span'); s.className='slot'; s.textContent=ch; s.dataset.ch=ch; s.addEventListener('click', ()=>{ s.remove(); updatePreview(); }); pwd.appendChild(s); updatePreview(); }
-    [pool,pwd].forEach(box=>{ box.addEventListener('dragover', e=>e.preventDefault()); box.addEventListener('drop', e=>{ e.preventDefault(); const ch = e.dataTransfer.getData('text/plain'); if(box===pwd) addToPwd(ch); }); });
-    document.getElementById('clearPwd').onclick = ()=>{ pwd.innerHTML=''; updatePreview(); };
-    document.getElementById('submitPwd').onclick = ()=>{ const pass = collect(); const ok = validate(pass); if(ok){ sfxLock(); passwordLab.classList.remove('visible'); buildFinalRoom(); } else { sfxAlarm(); shakeScreen(); } };
-    const collect = () => [...pwd.querySelectorAll('.slot')].map(s=>s.dataset.ch).join('');
-    function updatePreview(){ const pass = collect(); preview.textContent = pass || '(vacío)'; validate(pass, true); }
-    function setReq(id, good){ const el = reqList.querySelector(`[data-req="${id}"]`); const wasBad = el.classList.contains('bad'); el.classList.toggle('bad', !good); if (wasBad && !el.classList.contains('bad')) { beep('sine', 1200, 80, 0.04); } }
-    function validate(pass, soft){ const okLen = pass.length>=8, okUpper = /[A-Z]/.test(pass), okNum = /[0-9]/.test(pass), okSym = /[!@#$%^&*_\-+=?]/.test(pass), notCommon = !/(password|admin|qwerty|abc|1234)/i.test(pass); setReq('len', okLen); setReq('upper', okUpper); setReq('num', okNum); setReq('sym', okSym); if(!soft){ addScore((okLen+okUpper+okNum+okSym+notCommon)*2); } return okLen && okUpper && okNum && okSym && notCommon; }
-  }
-
+  function buildPool(){ const pool = document.getElementById('pool'); const pwd = document.getElementById('pwd'); const preview = document.getElementById('pwdPreview'); const reqList = document.getElementById('reqList'); pool.innerHTML=''; pwd.innerHTML=''; preview.textContent='(vacío)'; const pieces = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*_-+=?'.split(''); for (let i = pieces.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [pieces[i], pieces[j]] = [pieces[j], pieces[i]]; } pieces.slice(0, 48).forEach(ch => pool.appendChild(makeToken(ch))); function makeToken(ch){ const t = document.createElement('div'); t.className='token'; t.textContent=ch; t.draggable=true; t.tabIndex=0; t.setAttribute('role','button'); t.title='Arrastra para usar'; t.addEventListener('dragstart', e=>{ e.dataTransfer.setData('text/plain', ch); e.currentTarget.style.opacity='0.5'; }); t.addEventListener('dragend', e=>{ e.currentTarget.style.opacity='1'; }); t.addEventListener('click', ()=>{ addToPwd(ch); }); return t; } function addToPwd(ch){ const s = document.createElement('span'); s.className='slot'; s.textContent=ch; s.dataset.ch=ch; s.addEventListener('click', ()=>{ s.remove(); updatePreview(); }); pwd.appendChild(s); updatePreview(); } [pool,pwd].forEach(box=>{ box.addEventListener('dragover', e=>e.preventDefault()); box.addEventListener('drop', e=>{ e.preventDefault(); const ch = e.dataTransfer.getData('text/plain'); if(box===pwd) addToPwd(ch); }); }); document.getElementById('clearPwd').onclick = ()=>{ pwd.innerHTML=''; updatePreview(); }; document.getElementById('submitPwd').onclick = ()=>{ const pass = collect(); const ok = validate(pass); if(ok){ sfxLock(); passwordLab.classList.remove('visible'); buildFinalRoom(); } else { sfxAlarm(); shakeScreen(); } }; const collect = () => [...pwd.querySelectorAll('.slot')].map(s=>s.dataset.ch).join(''); function updatePreview(){ const pass = collect(); preview.textContent = pass || '(vacío)'; validate(pass, true); } function setReq(id, good){ const el = reqList.querySelector(`[data-req="${id}"]`); const wasBad = el.classList.contains('bad'); el.classList.toggle('bad', !good); if (wasBad && !el.classList.contains('bad')) { beep('sine', 1200, 80, 0.04); } } function validate(pass, soft){ const okLen = pass.length>=8, okUpper = /[A-Z]/.test(pass), okNum = /[0-9]/.test(pass), okSym = /[!@#$%^&*_\-+=?]/.test(pass), notCommon = !/(password|admin|qwerty|abc|1234)/i.test(pass); setReq('len', okLen); setReq('upper', okUpper); setReq('num', okNum); setReq('sym', okSym); if(!soft){ addScore((okLen+okUpper+okNum+okSym+notCommon)*2); } return okLen && okUpper && okNum && okSym && notCommon; } }
   function buildFinalRoom(){
-    setPhase('Cámara del Diamante'); arena.innerHTML='';
-    const w=S.W, h=S.H; arena.style.width=w+'px'; arena.style.height=h+'px';
+    setPhase('Cámara del Diamante'); arena.innerHTML=''; const w=S.W, h=S.H; arena.style.width=w+'px'; arena.style.height=h+'px';
     state.player = {x:40,y:h-80,w:36,h:36,vx:0,vy:0};
     const pEl = rect(arena, state.player.x, state.player.y, 36,36, 'player');
-    const msgs = ['🔥 ¡Última oferta exclusiva!','💰 ¡Reclama tu MILLÓN ahora!','🎥 ¡No creerás lo que hizo este youtuber!'];
-    const alarms = [rect(arena, 260, 120, 180, 50, 'alarm', msgs[0]), rect(arena, 520, 220, 180, 50, 'alarm', msgs[1]), rect(arena, 340, 340, 220, 50, 'alarm', msgs[2])];
+    const msgs = [ '¡Alerta de seguridad! Haz clic AHORA para proteger tu cuenta.', '¡Felicidades! Ingresa tu contraseña para reclamar tu premio.', '¡Tu youtuber favorito regala autos! Únete ya.', ];
+    const alarms = [rect(arena, 220, 120, 220, 50, 'alarm', msgs[0]), rect(arena, 520, 320, 220, 50, 'alarm', msgs[1]), rect(arena, 340, 420, 220, 50, 'alarm', msgs[2])];
     const aBoxes = alarms.map(a => ({x:a.offsetLeft, y:a.offsetTop, w:a.offsetWidth, h:a.offsetHeight, el: a, hit: false}));
     const sw = rect(arena, w-110, 40, 70, 40, 'switch', '⏻'); sw.title='Haz click para desactivar';
-    sw.addEventListener('click', ()=>{
-      sfxGenius(); aBoxes.forEach(a=>{ a.el.style.opacity=.25; a.el.style.filter='grayscale(100%)'; a.el.style.textDecoration='line-through'; a.hit = true; });
-      addScore(50); diamond.style.display='flex'; diamond.style.transform = 'scale(1)'; sw.style.pointerEvents = 'none'; sw.style.opacity = 0.5;
-    });
-    const diamond = rect(arena, w/2-20, h/2-60, 40,40, 'diamond');
-    diamond.style.display='none'; diamond.style.transform = 'scale(0)'; diamond.style.transition = 'transform .5s cubic-bezier(0.68, -0.55, 0.27, 1.55)';
-    
-    // --- CORRECCIÓN APLICADA ---
+    sw.addEventListener('click', ()=>{ sfxGenius(); aBoxes.forEach(a=>{ a.el.style.opacity=.25; a.el.style.filter='grayscale(100%)'; a.el.style.textDecoration='line-through'; a.hit = true; }); addScore(50); diamond.style.display='flex'; diamond.style.transform = 'scale(1)'; sw.style.pointerEvents = 'none'; sw.style.opacity = 0.5; });
+    const diamond = rect(arena, w/2-20, h/2-60, 40,40, 'diamond'); diamond.style.display='none'; diamond.style.transform = 'scale(0)'; diamond.style.transition = 'transform .5s cubic-bezier(0.68, -0.55, 0.27, 1.55)';
     const diamondBox = {x: w/2-20, y: h/2-60, w:40,h:40};
-
-    function loop(){
-      if(state.phase !== 'Cámara del Diamante') return;
-      const p = state.player;
-      if(state.keys.left) p.vx -= S.speed/4; if(state.keys.right) p.vx += S.speed/4; if(state.keys.up) p.vy -= S.speed/4; if(state.keys.down) p.vy += S.speed/4;
-      p.vx *= S.friction; p.vy *= S.friction;
-      const speedMagnitude = Math.sqrt(p.vx*p.vx + p.vy*p.vy);
-      if (speedMagnitude > S.speed) { p.vx = (p.vx / speedMagnitude) * S.speed; p.vy = (p.vy / speedMagnitude) * S.speed; }
-      p.x += p.vx; p.y += p.vy;
-      p.x = Math.max(0, Math.min(w-p.w, p.x)); p.y = Math.max(0, Math.min(h-p.h, p.y));
-      pEl.style.transform = `translate(${p.x}px, ${p.y}px)`; pEl.style.left = '0px'; pEl.style.top = '0px';
-      for(const box of aBoxes){ if(!box.hit && aabb(p, box)){ cancelAnimationFrame(state.raf); return defeat('Las Súper Alarmas te atraparon. Truco: ignóralas y busca el interruptor.'); } }
-      if(diamond.style.display !== 'none' && aabb(p, diamondBox)){ cancelAnimationFrame(state.raf); return victory(); }
-      state.raf = requestAnimationFrame(loop);
-    }
+    function loop(){ if(state.phase !== 'Cámara del Diamante') return; const p = state.player; if(state.keys.left) p.vx -= S.speed/4; if(state.keys.right) p.vx += S.speed/4; if(state.keys.up) p.vy -= S.speed/4; if(state.keys.down) p.vy += S.speed/4; p.vx *= S.friction; p.vy *= S.friction; const speedMagnitude = Math.sqrt(p.vx*p.vx + p.vy*p.vy); if (speedMagnitude > S.speed) { p.vx = (p.vx / speedMagnitude) * S.speed; p.vy = (p.vy / speedMagnitude) * S.speed; } p.x += p.vx; p.y += p.vy; p.x = Math.max(0, Math.min(w-p.w, p.x)); p.y = Math.max(0, Math.min(h-p.h, p.y)); pEl.style.transform = `translate(${p.x}px, ${p.y}px)`; pEl.style.left = '0px'; pEl.style.top = '0px'; for(const box of aBoxes){ if(!box.hit && aabb(p, box)){ cancelAnimationFrame(state.raf); return defeat('Las Súper Alarmas te atraparon. Truco: ignóralas y busca el interruptor.'); } } if(diamond.style.display !== 'none' && aabb(p, diamondBox)){ cancelAnimationFrame(state.raf); return victory(); } state.raf = requestAnimationFrame(loop); }
     state.raf = requestAnimationFrame(loop);
-
-    function victory(){
-      endPanel.innerHTML = `<h2>🏆 ¡Misión cumplida, Agente Maestro Anti-Trampas!</h2><p>Recuperaste el <strong>Diamante de la Información</strong> y desactivaste las Súper Alarmas sin caer en el clickbait.</p><ul><li>Puntaje final: <strong>${state.score}</strong></li><li>Sigilo: <strong>${state.stealth}</strong></li><li>Alarmas activadas: <strong>${state.alerts}</strong></li></ul><p>Recuerda: <em>Pensar antes de hacer clic</em> y usar <strong>contraseñas fuertes</strong> te mantiene a salvo.</p><div class="voiceRow"><button class="btn" id="playAgainBtn">Jugar de nuevo</button></div>`;
-      endScreen.classList.add('visible'); document.getElementById('playAgainBtn').onclick = ()=> location.reload();
-    }
+    function victory(){ endPanel.innerHTML = `<h2>🏆 ¡Misión cumplida, Agente!</h2><p>Recuperaste el <strong>Diamante de la Información</strong> y desactivaste las Súper Alarmas sin caer en el clickbait.</p><ul><li>Puntaje final: <strong>${state.score}</strong></li><li>Sigilo: <strong>${state.stealth}</strong></li><li>Alarmas activadas: <strong>${state.alerts}</strong></li></ul><p>Recuerda: <em>Pensar antes de hacer clic</em> y usar <strong>contraseñas fuertes</strong> te mantiene a salvo.</p><div class="voiceRow"><button class="btn" id="playAgainBtn">Jugar de nuevo</button></div>`; endScreen.classList.add('visible'); document.getElementById('playAgainBtn').onclick = resetGame; }
   }
+  function defeat(reason){ if (state.raf) cancelAnimationFrame(state.raf); endPanel.innerHTML = `<h2>🔔 ¡Capturado!</h2><p>${reason}</p><h3>Lección de Ciberseguridad</h3><ul><li>Desconfía de mensajes con prisa: “Última oportunidad” busca que no pienses.</li><li>Nadie regala cosas por nada. Verifica la fuente.</li><li>Para contraseñas fuertes: mezcla <strong>Mayúsculas</strong>, <strong>números</strong> y <strong>símbolos</strong> y evita palabras comunes.</li></ul><div class="voiceRow"><button class="btn" id="retryBtn">Reintentar</button></div>`; endScreen.classList.add('visible'); document.getElementById('retryBtn').onclick = resetGame; sfxAlarm(); }
 
-  function defeat(reason){
+  /* --- MEJORA: Función de reinicio suave --- */
+  function resetGame() {
     if (state.raf) cancelAnimationFrame(state.raf);
-    endPanel.innerHTML = `<h2>🔔 ¡Capturado!</h2><p>${reason}</p><h3>Lección de Ciberseguridad</h3><ul><li>Desconfía de mensajes con prisa: “Última oportunidad” busca que no pienses.</li><li>Nadie regala millones de monedas por nada. Verifica la fuente.</li><li>Para contraseñas fuertes: mezcla <strong>Mayúsculas</strong>, <strong>números</strong> y <strong>símbolos</strong> y evita palabras comunes.</li></ul><div class="voiceRow"><button class="btn" id="retryBtn">Reintentar</button></div>`;
-    endScreen.classList.add('visible'); document.getElementById('retryBtn').onclick = ()=> location.reload(); sfxAlarm();
+    state.phase = 'Briefing';
+    state.score = 0;
+    state.stealth = 100;
+    state.alerts = 0;
+    state.keys = {up:false,down:false,left:false,right:false};
+    state.movers = [];
+    state.gates = [];
+
+    scoreEl.textContent = state.score;
+    stealthEl.textContent = state.stealth;
+    alertsEl.textContent = state.alerts;
+    phaseEl.textContent = state.phase;
+
+    arena.innerHTML = '';
+    endScreen.classList.remove('visible');
+    passwordLab.classList.remove('visible');
+    briefing.classList.add('visible');
   }
 
   const keyMap = {ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right','w':'up','a':'left','s':'down','d':'right'};
   window.addEventListener('keydown', e=>{ const k = keyMap[e.key]; if(k){ state.keys[k]=true; e.preventDefault(); } });
   window.addEventListener('keyup', e=>{ const k = keyMap[e.key]; if(k){ state.keys[k]=false; e.preventDefault(); } });
-
-  document.querySelectorAll('#controls .pad').forEach(btn=>{
-    if(btn.classList.contains('blank')) return;
-    const dx = parseInt(btn.dataset.dx||'0'); const dy = parseInt(btn.dataset.dy||'0');
-    function press(){ if(dx<0) state.keys.left=true; if(dx>0) state.keys.right=true; if(dy<0) state.keys.up=true; if(dy>0) state.keys.down=true; }
-    function release(){ if(dx<0) state.keys.left=false; if(dx>0) state.keys.right=false; if(dy<0) state.keys.up=false; if(dy>0) state.keys.down=false; }
-    btn.addEventListener('touchstart', e=>{ e.preventDefault(); press(); }, {passive: false});
-    btn.addEventListener('touchend', e=>{ e.preventDefault(); release(); });
-    btn.addEventListener('mousedown', e=>{ e.preventDefault(); press(); });
-    btn.addEventListener('mouseup', release); btn.addEventListener('mouseleave', release);
-  });
-
+  document.querySelectorAll('#controls .pad').forEach(btn=>{ if(btn.classList.contains('blank')) return; const dx = parseInt(btn.dataset.dx||'0'); const dy = parseInt(btn.dataset.dy||'0'); function press(){ if(dx<0) state.keys.left=true; if(dx>0) state.keys.right=true; if(dy<0) state.keys.up=true; if(dy>0) state.keys.down=true; } function release(){ if(dx<0) state.keys.left=false; if(dx>0) state.keys.right=false; if(dy<0) state.keys.up=false; if(dy>0) state.keys.down=false; } btn.addEventListener('touchstart', e=>{ e.preventDefault(); press(); }, {passive: false}); btn.addEventListener('touchend', e=>{ e.preventDefault(); release(); }); btn.addEventListener('mousedown', e=>{ e.preventDefault(); press(); }); btn.addEventListener('mouseup', release); btn.addEventListener('mouseleave', release); });
+  
   document.getElementById('startBtn').onclick = ()=>{ briefing.classList.remove('visible'); if(ctx.state === 'suspended') ctx.resume(); buildHallway(); };
-  restartBtn.onclick = ()=> location.reload();
+  
+  // --- MEJORA: Asignar la nueva función de reinicio ---
+  restartBtn.onclick = resetGame;
   briefing.classList.add('visible');
 })();
 </script>
